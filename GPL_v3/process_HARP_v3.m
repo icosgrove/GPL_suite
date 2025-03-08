@@ -244,18 +244,20 @@ if parm.pad == 0 % Run consecutive, even windows without padding.
 
             for k = 1:length(GPL_struct)
                 
-                % Update sample time to be correct count from start of xwav
-                GPL_struct(k).start_time = GPL_struct(k).start_time + ((q - 1)*parm.nrec);
-                GPL_struct(k).end_time = GPL_struct(k).end_time + ((q - 1)*parm.nrec);
-                
-                % Update Julian time relative to start of xwav
-                GPL_struct(k).julian_start_time = jst + ...
-                    datenum(2000,0,0,0,0,GPL_struct(k).start_time/parm.SampleFreq);
-                GPL_struct(k).julian_end_time = jst +...
-                    datenum(2000,0,0,0,0,GPL_struct(k).end_time/parm.SampleFreq);
-                
-                % Save xwav name paired to each detection
-                GPL_struct(k).fname = files(n).name;
+               % Update Julian time relative to start of xwav
+               % GPL_struct(k).start_time is samples from start of rawfile
+               % jst is julian day start of rawfile
+               GPL_struct(k).julian_start_time = jst + ...
+                   datenum(2000,0,0,0,0,GPL_struct(k).start_time/parm.SampleFreq);
+               GPL_struct(k).julian_end_time = jst +...
+                   datenum(2000,0,0,0,0,GPL_struct(k).end_time/parm.SampleFreq);
+
+               % Update sample time to be correct count from start of entire xwav
+               GPL_struct(k).start_time = GPL_struct(k).start_time + ((q - 1)*parm.nrec);
+               GPL_struct(k).end_time = GPL_struct(k).end_time + ((q - 1)*parm.nrec);
+               
+               % Save xwav name paired to each detection
+               GPL_struct(k).fname = files(n).name;
                 
             end % For: Detection timestamp update
             
